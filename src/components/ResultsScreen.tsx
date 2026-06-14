@@ -43,34 +43,45 @@ function ResultsScreen({ state, onStartOver }: ResultsScreenProps) {
     });
   }, []);
 
+  const monthlyEquivalent =
+    state.frequency === "daily"
+      ? state.monthlyInvestment * 30
+      : state.frequency === "weekly"
+      ? (state.monthlyInvestment * 52) / 12
+      : state.monthlyInvestment;
+
+  console.log("Frequency:", state.frequency);
+  console.log("Investment:", state.monthlyInvestment);
+  console.log("Monthly Equivalent:", monthlyEquivalent);
+
   const result = calculateSIP(
     state.targetAmount,
-    state.monthlyInvestment,
+    monthlyEquivalent,
     state.annualReturn / 100
   );
 
   const stepUpOptions = calculateStepUpOptions(
     state.targetAmount,
-    state.monthlyInvestment,
+    monthlyEquivalent,
     state.annualReturn / 100
   );
 
   const increaseOptions = calculateIncreaseOptions(
     state.targetAmount,
-    state.monthlyInvestment,
+    monthlyEquivalent,
     state.annualReturn / 100
   );
 
   const futureProfiles = calculateFutureProfiles(
     state.age,
-    state.monthlyInvestment,
+    monthlyEquivalent,
     state.annualReturn / 100,
     [state.age + 3, state.age + 8, state.age + 18, state.age + 28]
   );
 
   const wealthScore = calculateWealthScore(
     state.targetAmount,
-    state.monthlyInvestment,
+    monthlyEquivalent,
     result.yearsToGoal
   );
 
@@ -128,8 +139,19 @@ function ResultsScreen({ state, onStartOver }: ResultsScreenProps) {
             value={formatCurrency(state.targetAmount)}
           />
           <StatCard
-            label="Monthly SIP"
+            label={
+              state.frequency === "daily"
+                ? "Daily Investment"
+                : state.frequency === "weekly"
+                ? "Weekly Investment"
+                : "Monthly SIP"
+            }
             value={formatCurrency(state.monthlyInvestment)}
+            subtext={
+              state.frequency !== "monthly"
+                ? `≈ ${formatCurrency(monthlyEquivalent)}/month`
+                : undefined
+            }
           />
           <StatCard label="Expected Return" value={`${state.annualReturn}%`} />
           <StatCard
@@ -313,7 +335,7 @@ function ResultsScreen({ state, onStartOver }: ResultsScreenProps) {
         <div className="glass-card p-4 md:p-6">
           <WealthChart
             targetAmount={state.targetAmount}
-            monthlyInvestment={state.monthlyInvestment}
+            monthlyInvestment={monthlyEquivalent}
             annualReturn={state.annualReturn / 100}
           />
         </div>

@@ -1,10 +1,10 @@
-import { useState } from 'react';
-import { AnimatePresence, motion } from 'framer-motion';
-import GoalSelection from './components/GoalSelection';
-import GoalAmount from './components/GoalAmount';
-import MonthlyInvestment from './components/MonthlyInvestment';
-import ResultsScreen from './components/ResultsScreen';
-import ProgressBar from './components/ProgressBar';
+import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import GoalSelection from "./components/GoalSelection";
+import GoalAmount from "./components/GoalAmount";
+import MonthlyInvestment from "./components/MonthlyInvestment";
+import ResultsScreen from "./components/ResultsScreen";
+import ProgressBar from "./components/ProgressBar";
 
 export interface Goal {
   id: string;
@@ -18,6 +18,7 @@ export interface AppState {
   selectedGoal: Goal | null;
   targetAmount: number;
   monthlyInvestment: number;
+  frequency: "daily" | "weekly" | "monthly";
   annualReturn: number;
   userName: string;
   age: number;
@@ -28,8 +29,9 @@ const INITIAL_STATE: AppState = {
   selectedGoal: null,
   targetAmount: 0,
   monthlyInvestment: 0,
+  frequency: "monthly",
   annualReturn: 12,
-  userName: '',
+  userName: "",
   age: 22,
 };
 
@@ -37,15 +39,15 @@ function App() {
   const [state, setState] = useState<AppState>(INITIAL_STATE);
 
   const goToNextStep = () => {
-    setState(prev => ({ ...prev, step: Math.min(prev.step + 1, 4) }));
+    setState((prev) => ({ ...prev, step: Math.min(prev.step + 1, 4) }));
   };
 
   const goToPreviousStep = () => {
-    setState(prev => ({ ...prev, step: Math.max(prev.step - 1, 1) }));
+    setState((prev) => ({ ...prev, step: Math.max(prev.step - 1, 1) }));
   };
 
   const selectGoal = (goal: Goal) => {
-    setState(prev => ({
+    setState((prev) => ({
       ...prev,
       selectedGoal: goal,
       targetAmount: goal.defaultAmount || 0,
@@ -54,23 +56,28 @@ function App() {
   };
 
   const setTargetAmount = (amount: number) => {
-    setState(prev => ({ ...prev, targetAmount: amount }));
+    setState((prev) => ({ ...prev, targetAmount: amount }));
   };
 
   const setMonthlyInvestment = (amount: number) => {
-    setState(prev => ({ ...prev, monthlyInvestment: amount }));
+    setState((prev) => ({ ...prev, monthlyInvestment: amount }));
   };
-
+  const setFrequency = (frequency: "daily" | "weekly" | "monthly") => {
+    setState((prev) => ({
+      ...prev,
+      frequency,
+    }));
+  };
   const setUserName = (name: string) => {
-    setState(prev => ({ ...prev, userName: name }));
+    setState((prev) => ({ ...prev, userName: name }));
   };
 
   const setAnnualReturn = (rate: number) => {
-    setState(prev => ({ ...prev, annualReturn: rate }));
+    setState((prev) => ({ ...prev, annualReturn: rate }));
   };
 
   const setAge = (age: number) => {
-    setState(prev => ({ ...prev, age }));
+    setState((prev) => ({ ...prev, age }));
   };
 
   const startOver = () => {
@@ -121,7 +128,10 @@ function App() {
                 exit="exit"
               >
                 {state.step === 1 && (
-                  <GoalSelection onSelectGoal={selectGoal} selectedGoal={state.selectedGoal} />
+                  <GoalSelection
+                    onSelectGoal={selectGoal}
+                    selectedGoal={state.selectedGoal}
+                  />
                 )}
                 {state.step === 2 && (
                   <GoalAmount
@@ -137,6 +147,8 @@ function App() {
                     targetAmount={state.targetAmount}
                     amount={state.monthlyInvestment}
                     onAmountChange={setMonthlyInvestment}
+                    frequency={state.frequency}
+                    onFrequencyChange={setFrequency}
                     annualReturn={state.annualReturn}
                     onAnnualReturnChange={setAnnualReturn}
                     userName={state.userName}
@@ -163,7 +175,7 @@ function App() {
         {/* Footer */}
         <footer className="text-center py-4 px-4 text-sm text-gray-500">
           <p>
-            Copyright 2026 Anurag Giri |{' '}
+            Copyright 2026 Anurag Giri |{" "}
             <a
               href="https://www.instagram.com/anuraggirispeaks/"
               target="_blank"
@@ -171,7 +183,7 @@ function App() {
               className="text-accent hover:text-accent-light transition-colors"
             >
               @anuraggirispeaks
-            </a>{' '}
+            </a>{" "}
             | All rights reserved.
           </p>
         </footer>
