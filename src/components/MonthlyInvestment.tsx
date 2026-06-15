@@ -283,14 +283,14 @@ function MonthlyInvestment({
                        placeholder-gray-600 focus:outline-none"
             style={{ caretColor: "#818cf8" }}
           />
-          <span className="text-xl text-gray-500">
+          <span className="text-xl text-gray-500 ">
             {frequency === "daily" && "/day"}
             {frequency === "weekly" && "/week"}
             {frequency === "monthly" && "/month"}
           </span>
         </div>
         {frequency !== "monthly" && (
-          <p className="text-sm text-gray-400 mb-4">
+          <p className="text-sm text-green-400 mb-4">
             ≈ {formatCurrency(monthlyEquivalent)}/month
           </p>
         )}
