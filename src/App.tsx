@@ -173,19 +173,28 @@ function App() {
         </main>
 
         {/* Footer */}
-        <footer className="text-center py-4 px-4 text-sm text-gray-500">
+        <footer className="text-center py-6 px-4 text-sm text-gray-500">
           <p>
             Copyright 2026 Anurag Giri |{" "}
             <a
               href="https://www.instagram.com/anuraggirispeaks/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent hover:text-accent-light transition-colors"
+              className="text-accent hover:text-accent-light"
             >
               @anuraggirispeaks
             </a>{" "}
             | All rights reserved.
           </p>
+
+          <a
+            href="https://topmate.io/anuraggiri"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block mt-3 px-4 py-2 rounded-lg bg-accent text-white font-medium hover:opacity-90 transition"
+          >
+            💬 Talk with Anurag
+          </a>
         </footer>
       </div>
     </div>
